@@ -5,7 +5,7 @@ metadata:
   namespace: godoc
   labels:
     name: redis
-    role: db
+    role: cache
 spec:
   minReadySeconds: 30
   strategy:
@@ -16,7 +16,7 @@ spec:
       name: redis
       labels:
         name: redis
-        role: db
+        role: cache
     spec:
       containers:
       - image: redis:3.2.8-alpine

@@ -5,7 +5,7 @@ metadata:
   namespace: godoc
   labels:
     name: redis
-    role: db
+    role: cache
 spec:
   ports:
   - name: redis
@@ -13,5 +13,5 @@ spec:
     targetPort: 6379
   selector:
     name: redis
-    role: db
+    role: cache
   type: NodePort
