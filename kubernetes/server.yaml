@@ -19,7 +19,7 @@ spec:
         role: web
     spec:
       imagePullSecrets:
-     - name: wantedlybotkey
+      - name: wantedlybotkey
       containers:
       - image: quay.io/wantedly/docker-godoc:latest
         name: server
