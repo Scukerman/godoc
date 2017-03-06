@@ -11,4 +11,4 @@ services:
       REDIS_URL: redis://redis:6379
       GITHUB_TOKEN: "your access token for github.com"
   redis:
-    image: redis
+    image: redis:3.2.8-alpine
