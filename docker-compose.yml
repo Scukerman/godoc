@@ -1,0 +1,14 @@
+version: "3"
+services:
+  server:
+    image: quay.io/wantedly/godoc:latest
+    #build: .
+    depends_on:
+      - redis
+    ports:
+      - "8080:8080"
+    environment:
+      REDIS_URL: redis://redis:6379
+      GITHUB_TOKEN: "your access token for github.com"
+  redis:
+    image: redis
