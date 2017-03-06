@@ -2,7 +2,8 @@ FROM golang:1.6-alpine
 
 RUN apk --update --no-cache add git && \
 	go get github.com/golang/gddo/gddo-server && \
-	go install github.com/golang/gddo/gddo-server
+	go install github.com/golang/gddo/gddo-server && \
+	apk del git
 
 EXPOSE 8080
 
