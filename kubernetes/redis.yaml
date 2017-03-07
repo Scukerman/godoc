@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: godoc
+  labels:
+    name: redis
+    role: cache
+spec:
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      name: redis
+      labels:
+        name: redis
+        role: cache
+    spec:
+      containers:
+      - image: redis:3.2.8-alpine
+        name: redis
+        ports:
+        - containerPort: 6379
