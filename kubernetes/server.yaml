@@ -18,10 +18,8 @@ spec:
         name: server
         role: web
     spec:
-      imagePullSecrets:
-      - name: wantedlybotkey
       containers:
-      - image: quay.io/wantedly/docker-godoc:latest
+      - image: quay.io/wantedly/godoc:latest
         name: server
         ports:
         - containerPort: 8080
