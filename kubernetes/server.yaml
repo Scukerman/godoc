@@ -31,3 +31,24 @@ spec:
             secretKeyRef:
               name: dotenv
               key: github-token
+      - image: quay.io/dtan4/nginx-basic-auth-proxy
+        name: nginx-basic-auth-proxy
+        ports:
+        - containerPort: 8081
+        env:
+        - name: BASIC_AUTH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: dotenv
+              key: nginx-basic-auth-username
+        - name: BASIC_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dotenv
+              key: nginx-basic-auth-password
+        - name: PROXY_PASS
+          value: http://localhost:8080/
+        - name: PORT
+          value: "8081"
+        - name: SERVER_NAME
+          value: godoc.wantedly.com
