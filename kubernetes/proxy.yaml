@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-basic-auth-proxy
+  namespace: godoc
+  labels:
+    name: nginx-basic-auth-proxy
+    role: web
+spec:
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      name: nginx-basic-auth-proxy
+      labels:
+        name: nginx-basic-auth-proxy
+        role: web
+    spec:
+      containers:
+      - image: quay.io/dtan4/nginx-basic-auth-proxy
+        name: nginx-basic-auth-proxy
+        ports:
+        - containerPort: 8080
+        env:
+        - name: BASIC_AUTH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: dotenv
+              key: nginx-basic-auth-username
+        - name: BASIC_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dotenv
+              key: nginx-basic-auth-password
+        - name: PROXY_PASS
+          value: http://server/
+        - name: PORT
+          value: "8080"
+        - name: SERVER_NAME
+          value: godoc.wantedly.com

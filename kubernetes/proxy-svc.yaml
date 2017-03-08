@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-basic-auth-proxy
+  namespace: godoc
+  labels:
+    name: nginx-basic-auth-proxy
+    role: web
+spec:
+  ports:
+  - name: https
+    port: 443
+    targetPort: 8080
+  selector:
+    name: nginx-basic-auth-proxy
+    role: web
+  type: LoadBalancer
