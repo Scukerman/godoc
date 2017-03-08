@@ -14,4 +14,4 @@ spec:
   selector:
     name: server
     role: web
-type: LoadBalancer
+  type: NodePort
