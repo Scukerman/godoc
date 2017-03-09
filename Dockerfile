@@ -1,6 +1,6 @@
 # Official document say: Install Go1.6.
 # https://github.com/golang/gddo/wiki/Development-Environment-Setup
-FROM golang:1.6-alpine
+FROM golang:1.8-alpine
 
 RUN apk --update --no-cache add git && \
 	go get github.com/golang/gddo/gddo-server && \
