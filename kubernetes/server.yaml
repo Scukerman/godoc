@@ -30,7 +30,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: dotenv
-              key: github-token
+              key: GITHUB_TOKEN
       - image: quay.io/dtan4/nginx-basic-auth-proxy
         name: nginx-basic-auth-proxy
         ports:
@@ -40,12 +40,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: dotenv
-              key: nginx-basic-auth-username
+              key: BASIC_AUTH_USERNAME
         - name: BASIC_AUTH_PASSWORD
           valueFrom:
             secretKeyRef:
               name: dotenv
-              key: nginx-basic-auth-password
+              key: BASIC_AUTH_PASSWORD
         - name: PROXY_PASS
           value: http://localhost:8080/
         - name: PORT
@@ -54,4 +54,4 @@ spec:
           valueFrom:
             secretKeyRef:
               name: dotenv
-              key: server-name
+              key: SERVER_NAME
