@@ -1,7 +1,9 @@
 FROM golang:1.8-alpine
 
 RUN apk --update --no-cache add git python && \
-	go get github.com/golang/gddo/gddo-server && \
+	git clone https://github.com/golang/gddo /go/src/github.com/golang/gddo && \
+	( cd /go/src/github.com/golang/gddo && git checkout 2dccccb2f204bf42a2f46fc9ecd6340ec4984fd3 ) && \
+	( cd /go/src/github.com/golang/gddo/gddo-server && go install ) && \
 	wget http://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-137.0.1-linux-x86_64.tar.gz -O /google-cloud-sdk.tar.gz && \
 	cd / && tar xzvf google-cloud-sdk.tar.gz && \
 	yes | /google-cloud-sdk/install.sh && \
