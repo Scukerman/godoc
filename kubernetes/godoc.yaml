@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: godoc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: godoc
+  namespace: godoc
+  labels:
+    app: godoc
+    role: web
+spec:
+  selector:
+    matchLabels:
+      app: godoc
+      role: web
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: godoc
+        role: web
+    spec:
+      containers:
+      - name: godoc
+        image: bgpat/gddo:latest
+        envFrom:
+        - secretRef:
+            name: dotenv
+        ports:
+        - containerPort: 9200
+        args:
+        - --sidebar
+        - --remoteapi-endpoint
+        - api:8080
+        - --db-server
+        - redis://redis:6379
+        - --http=:9200
+      - name: proxy
+        image: quay.io/wantedly/nginx-basic-auth:latest
+        ports:
+        - containerPort: 80
+        env:
+        envFrom:
+        - secretRef:
+            name: dotenv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: godoc
+  namespace: godoc
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-northeast-1:096233016669:certificate/cef0f8a7-10b4-4165-88e5-8e7f12b86d52
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+spec:
+  selector:
+    app: godoc
+    role: web
+  ports:
+  - protocol: TCP
+    port: 443
+    targetPort: 80
+    name: http
+  type: LoadBalancer

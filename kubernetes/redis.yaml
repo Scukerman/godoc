@@ -1,25 +1,55 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: redis
   namespace: godoc
   labels:
-    name: redis
-    role: cache
+    app: redis
+    role: db
 spec:
-  minReadySeconds: 30
-  strategy:
-    type: RollingUpdate
+  serviceName: redis
   replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+      role: db
   template:
     metadata:
-      name: redis
       labels:
-        name: redis
-        role: cache
+        app: redis
+        role: db
     spec:
       containers:
-      - image: redis:3.2.8-alpine
-        name: redis
+      - name: redis
+        image: redis:3.2-alpine
         ports:
         - containerPort: 6379
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 50Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: godoc
+  labels:
+    app: redis
+    role: db
+spec:
+  ports:
+  - port: 6379
+    name: redis
+    protocol: TCP
+  selector:
+    app: redis
+    role: db
