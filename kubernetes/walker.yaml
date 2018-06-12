@@ -34,7 +34,7 @@ spec:
               value: http://godoc
             envFrom:
             - secretRef:
-                name: godoc
+                name: dotenv
             image: bgpat/godoc-walker:latest
             imagePullPolicy: Always
             name: godoc-walker
