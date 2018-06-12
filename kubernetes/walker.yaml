@@ -38,5 +38,5 @@ spec:
             name: godoc-walker
           dnsPolicy: ClusterFirst
           restartPolicy: Never
-  schedule: '* * * * *'
+  schedule: '*/5 * * * *'
   successfulJobsHistoryLimit: 3
