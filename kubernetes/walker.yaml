@@ -1,0 +1,44 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    app: walker
+    role: job
+  name: walker
+  namespace: godoc
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: walker
+        role: job
+      name: walker
+    spec:
+      parallelism: 1
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: walker
+            role: job
+          name: walker
+        spec:
+          containers:
+          - env:
+            - name: REDIS_URL
+              value: redis://redis:6379/1
+            - name: GODOC_URL
+              value: http://godoc
+            envFrom:
+            - secretRef:
+                name: godoc
+            image: bgpat/godoc-walker:latest
+            imagePullPolicy: Always
+            name: godoc-walker
+          dnsPolicy: ClusterFirst
+          restartPolicy: Never
+  schedule: '* * * * *'
+  successfulJobsHistoryLimit: 3
